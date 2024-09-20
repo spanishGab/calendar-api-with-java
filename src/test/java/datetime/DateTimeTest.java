@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 
+import java.time.DayOfWeek;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +20,7 @@ class DateTimeTest {
         DateTime sut = new DateTime(
             2024, 1, 1, 1, 12, 12, 125, "America/Caracas"
         );
-        assertEquals("2024-01-01T01:12:12.125-04:00", sut.toISO8601(Formats.LONG_ISO8601));
+        assertEquals("2024-01-01T01:12:12.125-04:00", sut.toISO8601(DateTime.Formats.LONG_ISO8601));
     }
 
     @Test
@@ -27,7 +28,7 @@ class DateTimeTest {
         DateTime sut = new DateTime(
                 2024, 1, 1, 1, 12, 12, 125, "Asia/Tokyo"
         );
-        assertEquals("2024-01-01", sut.toISO8601(Formats.SHORT_ISO8601));
+        assertEquals("2024-01-01", sut.toISO8601(DateTime.Formats.SHORT_ISO8601));
     }
 
     @Test
@@ -37,6 +38,24 @@ class DateTimeTest {
         );
         assertThrows(IllegalArgumentException.class, () -> sut.toISO8601(null));
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "16, 1",
+            "17, 2",
+            "18, 3",
+            "19, 4",
+            "20, 5",
+            "21, 6",
+            "22, 7"
+    })
+    void test_getDayOfWeek_shouldReturnAValidDayOfWeek(int day, int expectedDayOfWeek) {
+        DateTime sut = new DateTime(
+                2024, 9, day, 1, 12, 12, 125, "America/Sao_Paulo"
+        );
+        assertEquals(expectedDayOfWeek, sut.getDayOfWeek().getValue());
+    }
+
 
     @ParameterizedTest
     @CsvSource({

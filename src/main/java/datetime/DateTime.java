@@ -1,12 +1,18 @@
 package  datetime;
 
+import java.time.DayOfWeek;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class DateTime {
+    public enum Formats {
+        LONG_ISO8601,
+        SHORT_ISO8601,
+    }
+
     protected static final String DEFAULT_ZONE_ID = "UTC";
-    protected ZonedDateTime instance;
+    private final ZonedDateTime instance;
 
     public DateTime() {
         this.instance = DateTime.now(DateTime.DEFAULT_ZONE_ID);
@@ -46,6 +52,10 @@ public class DateTime {
             case null, default -> throw new IllegalArgumentException("invalid date format");
         }
         return formattedInstance;
+    }
+
+    public DayOfWeek getDayOfWeek() {
+        return this.instance.getDayOfWeek();
     }
 
     protected static ZonedDateTime now(String zone) {
